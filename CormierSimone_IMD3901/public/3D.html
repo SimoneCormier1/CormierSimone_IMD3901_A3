@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>3D Player</title>
+        <meta charset="utf-8" />
+        <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+        <link rel="stylesheet" href="/css/user-gesture.css">
+    </head>
+
+    <body>
+
+        <!-- sound assets-->
+        <a-assets timeout="10000">
+            <audio id="red" src="/assets/redbeep.mp3" preload="auto" crossorigin="anonymous"></audio>
+            <audio id="blue" src="/assets/bluebeep.mp3" preload="auto" crossorigin="anonymous"></audio>
+            <audio id="green" src="/assets/greenbeep.mp3" preload="auto" crossorigin="anonymous"></audio>
+            <audio id="yellow" src="/assets/yellowbeep.mp3" preload="auto" crossorigin="anonymous"></audio>
+        </a-assets>
+
+       <!-- TEXT and FORMAT-->
+
+        <!-- start button initialized but not used by 2D player -->
+        <div id="buttonPosition">
+            <div class="placeMiddle">
+                <button id="button">Start!</button>
+            </div>
+        </div>
+
+        <!-- score -->
+        <div id ="score3D">Score: 0 </div>
+
+        <!-- timer -->
+        <div class = "timerPosition">
+            <div id ="timer">Time: 100</div>
+        </div>
+
+        <!-- got it right, next round -->
+        <div id ="nextRound">
+            <div id = "right">Got it Right! Next Round</div>
+        </div>
+
+        <!-- got it wrong, next round -->
+        <div id ="nextRound2">
+            <div id = "wrong">Got it Wrong:( Next Round</div>
+        </div>
+
+        <!-- disable screen -->
+        <div class="disablescreenPosition">
+            <div id ="disableScreen"></div>
+        </div>
+
+        <!-- both players lose -->
+        <div class = "endPosition">
+            <div id ="bothLose"> You Both Lose! :(</div>
+        </div>
+
+        <!-- 3D player wins -->
+        <div class = "endPosition">
+            <div id ="youWin"> 3D Player Won!</div>
+        </div>
+
+        <!-- 2D player loses -->
+        <div class = "endPosition">
+            <div id ="youLose"> 3D Player Lose!</div>
+        </div>
+
+
+    <!-- scene -->
+    <a-scene light="defaultLightsEnabled: false" background="color:rgb(0, 0, 0);">
+
+        <!-- camera -->
+        <a-entity camera wasd-controls look-controls position="0 1.6 0">
+            <a-entity cursor="rayOrigin:mouse;" raycaster="far:20; interval:200; objects:.interactive"></a-entity>
+        </a-entity>
+
+        <a-entity light="color: #BBB; intensity:1; castShadow:true; shadowBias:-0.0005; angle:40; penumbra:0.3;" position="0 1 2" ></a-entity>
+
+        <a-entity light="color: #BBB; intensity:1.5; castShadow:true; shadowBias:-0.0005; angle:40; penumbra:0.3;" position="0 -5 5"></a-entity>
+
+        <!-- creating ground -->
+        <a-entity class="ground"   shadow="cast:false; receive:true;" geometry="primitive:plane; width:14; height:14;" material="color:white;" position="0 0.8 0" rotation="-90 0 0"></a-entity>
+
+        <!-- red button -->
+        <a-entity id="red_button" position="-0.75 0.6 -1">
+            <a-entity class="button interactive" position="0 0.6 0" geometry="primitive:cylinder; radius:0.15; height:0.2;" material="color:rgb(255, 100, 100)" 
+                        animation__mouseenter="property:material.color; type:color; to:rgb(255, 0, 0); startEvents:mouseenter; dur:200"
+                        animation__mouseleave="property:material.color; type:color; to:rgb(255, 100, 100); startEvents:mouseleave; dur:200"
+                        animation__click="property:position.y; from:0.55; to:0.6; startEvents:click; dur:300"  shadow="cast:true; receive:true" sound="src: #red; on:click"></a-entity>
+            <a-entity position="0 0.3 0" geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" material="color:rgb(128,128,128)"  shadow="cast:true; receive:true"></a-entity>
+        </a-entity>
+
+        <!-- blue button -->
+        <a-entity id="blue_button" position="-0.25 0.6 -1">
+            <a-entity class="button interactive" position="0 0.6 0" geometry="primitive:cylinder; radius:0.15; height:0.2;" material="color:rgb(100, 100, 255)"
+                        animation__mouseenter="property:material.color; type:color; to:rgb(0, 0, 255); startEvents:mouseenter; dur:200"
+                        animation__mouseleave="property:material.color; type:color; to:rgb(100, 100, 255); startEvents:mouseleave; dur:200"
+                        animation__click="property:position.y; from:0.55; to:0.6; startEvents:click; dur:300"  shadow="cast:true; receive:true" sound="src: #blue; on:click"></a-entity>
+            <a-entity position="0 0.3 0" geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" material="color:rgb(128,128,128)"  shadow="cast:true; receive:true"></a-entity>
+        </a-entity>
+
+        <!-- green button -->
+        <a-entity id="green_button" position="0.25 0.6 -1">
+            <a-entity class="button interactive" position="0 0.6 0" geometry="primitive:cylinder; radius:0.15; height:0.2;" material="color:rgb(100, 255, 100)"
+                        animation__mouseenter="property:material.color; type:color; to:rgb(0, 255, 0); startEvents:mouseenter; dur:200"
+                        animation__mouseleave="property:material.color; type:color; to:rgb(100, 255, 100); startEvents:mouseleave; dur:200"
+                        animation__click="property:position.y; from:0.55; to:0.6; startEvents:click; dur:300"  shadow="cast:true; receive:true" sound="src: #green; on:click"></a-entity>
+            <a-entity position="0 0.3 0" geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" material="color:rgb(128,128,128)"  shadow="cast:true; receive:true"></a-entity>
+        </a-entity>
+            
+        <!-- yellow button -->
+        <a-entity id="yellow_button" position="0.75 0.6 -1">
+            <a-entity class="button interactive" position="0 0.6 0" geometry="primitive:cylinder; radius:0.15; height:0.2;" material="color:rgb(255, 255, 100)"
+                        animation__mouseenter="property:material.color; type:color; to:rgb(255, 255, 0); startEvents:mouseenter; dur:200"
+                        animation__mouseleave="property:material.color; type:color; to:rgb(255, 255, 100); startEvents:mouseleave; dur:200"
+                        animation__click="property:position.y; from:0.55; to:0.6; startEvents:click; dur:300"  shadow="cast:true; receive:true" sound="src: #yellow; on:click"></a-entity>
+            <a-entity position="0 0.3 0" geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" material="color:rgb(128,128,128)"  shadow="cast:true; receive:true"></a-entity>
+        </a-entity>
+
+        <!-- create sphere -->
+        <a-sphere id="sphere" radius="3" position="0 5 -10" ></a-sphere>
+
+    </a-scene>
+
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        
+        //values
+        start = 0;
+        score3D = 0;
+        win = 0;
+
+        document.querySelector('#nextRound').style.display='none'; 
+        document.querySelector('#nextRound2').style.display='none'; 
+
+        // timer
+        let timerFunc = document.getElementById('timer');
+        let timer = function(time) {
+            //when timer gets to 0 both players lose and nobody has won
+            if(time === -1 && win === 0) {
+            socket.emit('2DdisableOn');
+            socket.emit('bothLose');  
+                    
+                return time;
+            }
+            //start timer at 100 seconds
+            timerFunc.innerHTML = "Time: "+ time;
+            return setTimeout(() => {timer(--time)}, 1000);
+        }
+
+        //start
+        const socket = io();
+
+        socket.on('connect', (userData) => {
+            console.log('I exist!');
+
+            //if red is pressed change for sphere and background of player 2
+            document.querySelector('#red_button').querySelector('.button').addEventListener('click', function(){
+                socket.emit('red1');
+                socket.emit('red2');
+                socket.emit('red4');
+            });
+
+            //if blue is pressed change for sphere and background of player 2
+            document.querySelector('#blue_button').querySelector('.button').addEventListener('click', function(){
+                socket.emit('blue1');
+                socket.emit('blue2');
+                socket.emit('blue4');
+            });
+
+            //if green is pressed change for sphere and background of player 2
+            document.querySelector('#green_button').querySelector('.button').addEventListener('click', function(){
+                socket.emit('green1');
+                socket.emit('green2');
+                socket.emit('green4');
+            });
+
+            //if yellow is pressed change for sphere and background of player 2
+            document.querySelector('#yellow_button').querySelector('.button').addEventListener('click', function(){
+                socket.emit('yellow1');
+                socket.emit('yellow2');
+                socket.emit('yellow4');
+            });
+        });
+
+
+
+        //listen to event from server
+        socket.on('color_change1', (data) => {
+            let colorStr = 'rgb(' + data.r + ',' + data.g + ',' + data.b + ')';
+            console.log('color_change1:' + colorStr);
+            document.querySelector('#sphere').setAttribute('material', {color:colorStr});
+
+            color = document.getElementById("sphere").getAttribute('material').color;   
+        });
+
+        //listen to event from server
+        socket.on('color_change4', (data) => {
+            let colorStr = 'rgb(' + data.r + ',' + data.g + ',' + data.b + ')';
+            console.log('color_change4:' + colorStr);
+            document.querySelector('#sphere').setAttribute('material', {color:colorStr});
+
+            color = document.getElementById("sphere").getAttribute('material').color;   
+        });
+
+        //button will start the game
+        document.querySelector('#button').addEventListener('click', function(){
+            socket.emit('start');
+        });
+
+        //function starts when start button is pressed
+        socket.on('start_game', function(data){
+
+            //initializing arrays
+            colorsChosen3D = [];
+            colorsChosen2D = [];
+            
+            //disable start button, 2D player does not need it
+            document.querySelector('#buttonPosition').style.display='none'; 
+            
+            //turn on disable 2d screenm turn off disable 3D screen
+            socket.emit('2DdisableOn');   
+            socket.emit('3DdisableOff'); 
+
+            //timer
+            start += 1;
+            if (start === 1){
+            timer(100);  
+
+            }
+        }); 
+
+        //stores color change for 2D
+        socket.on('color_change3', function(data){
+        
+            let colorStr= data; 
+            document.querySelector('#sphere').setAttribute('material', {color:colorStr}); 
+
+            color = document.getElementById("sphere").getAttribute('material').color;
+            colorsChosen2D.push(color);              // storing the colors the player presses into an array
+            console.log(colorsChosen2D.length);  
+
+        });
+
+        //color change for 3D storage
+        socket.on('color_change4', function(data){
+
+            length = 4
+
+            let colorStr= data; 
+            document.querySelector('#sphere').setAttribute('material', {color:colorStr}); 
+
+            color = document.getElementById("sphere").getAttribute('material').color;
+            colorsChosen3D.push(color);   
+            console.log(colorsChosen3D.length);
+            
+
+            //when 3 colors are chosen, stop and next layer plays 
+            if (colorsChosen3D.length === length){
+                socket.emit('2DdisableOff');  
+                socket.emit('3DdisableOn'); 
+                document.querySelector('#nextRound').style.display='none'; 
+                document.querySelector('#nextRound2').style.display='none'; 
+            }
+
+        
+        });  
+
+
+        //next round
+        socket.on('next_round', function(data){
+            colorsChosen3D = [];
+            colorsChosen2D = []; 
+
+            nextRound = 5;
+                
+        });
+
+        //when on next round
+        if (nextRound = 5){
+            socket.on('color_change4', function(data){
+
+                //if player chose same amount of colors
+                if (colorsChosen3D.length === colorsChosen2D.length){ 
+                            //if player chose same colors                         
+                            if (JSON.stringify(colorsChosen3D) === JSON.stringify(colorsChosen2D)){                           
+                                score3D +=10;                                                             
+                                document.getElementById("score3D").innerHTML = "Score: " + score3D;
+                                document.querySelector('#nextRound').style.display='block'; 
+                                socket.emit('start');
+                            
+                                if (score3D === 50) {         // checking if goal score is reached
+                                        socket.emit('3DWin');
+
+                                    
+                                }
+                            }
+
+                            else{   // if array is not the same
+                                score3D -=10;
+                                document.getElementById("score3D").innerHTML = "Score: " + score3D;  // player loses points 
+                                document.querySelector('#nextRound2').style.display='block';     
+                                
+                                socket.emit('start')
+                            }             
+                }      
+            });    
+        } 
+
+
+        // display both lose
+        socket.on('both_lose', function(data){
+            document.querySelector('#bothLose').style.display='block';
+            document.querySelector('#disableScreen').style.display='block';
+            document.querySelector('#nextRound').style.display='none'; 
+            document.querySelector('#nextRound2').style.display='none';      
+            document.querySelector('#timer').style.display='none';    
+        });     
+
+        // display 3D win
+        socket.on('3D_Win', function(data){
+            document.querySelector('#disableScreen').style.display='block';
+            document.querySelector('#youWin').style.display='block';
+            document.querySelector('#bothLose').style.display='none'; 
+            document.querySelector('#nextRound').style.display='none'; 
+            document.querySelector('#nextRound2').style.display='none';      
+            document.querySelector('#timer').style.display='none';
+            win = 1;  
+        });    
+        
+        // display 3D lose
+        socket.on('2D_Win', function(data){
+            document.querySelector('#disableScreen').style.display='block';
+            document.querySelector('#youLose').style.display='block';
+            document.querySelector('#bothLose').style.display='none'; 
+            document.querySelector('#nextRound').style.display='none'; 
+            document.querySelector('#nextRound2').style.display='none';      
+            document.querySelector('#timer').style.display='none';
+            win = 1; 
+        });   
+
+        //disable screen is off
+        socket.on('3D_disable_off', function(data){
+            document.querySelector('#disableScreen').style.display='none';
+        });   
+
+        //disable screen is on
+        socket.on('3D_disable_on', function(data){
+            document.querySelector('#disableScreen').style.display='block';
+        });
+
+    </script>
+    </body>
+</html>

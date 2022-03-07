@@ -1,0 +1,349 @@
+/* just some css to make an overlay cover all A-Frame */
+
+#user-gesture-overlay {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 999999;
+    cursor: pointer;
+  }
+  
+  #user-gesture-button {
+    display: none;
+    width: 80%;
+    height: 80%;
+    background-color: rgb(235, 79, 38);
+    color: white;
+    padding: 14px 20px;
+    margin: 0px 10px 8px 10px;
+    border: 5px solid #ffffff;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  #user-gesture-button:hover {
+    background-color: rgb(246, 194, 67);
+  }
+  
+  #loading-animation {
+    display: block;
+    width: 80%;
+    height: 80%;
+  }
+
+  #button{
+  
+    display: block;
+    background-color:#610e81;
+    color: white;
+    padding: 16px 32px;
+    margin: 8px 10px;
+    cursor: pointer;
+    z-index: 999999;  
+    font-size: 50px;
+    border:none;
+    text-align: center;
+    display: inline-block;
+
+  
+  }
+
+  #redB{
+    background-color: #e71111; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 40px;
+    margin: 4px 2px;
+    cursor: pointer;
+  
+  }
+  
+  #button:hover{
+    background-color:#bab0cf; 
+    color: rgb(10, 10, 10);
+  }
+  
+  #buttonPosition {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999999;
+    cursor: pointer;
+  }
+  
+  .placeMiddle {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  #nextRound {
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 15%;
+    left: 55%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:xx-large;
+    color:#00ff22;
+    background-color: #ffffff;
+  }
+
+  #nextRound2 {
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 15%;
+    left: 55%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:xx-large;
+    color:#ff0000;
+    background-color: #ffffff;
+  }
+
+  #nextRound3 {
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 90%;
+    left: 40%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 60px;
+    color:#00ff22;
+    background-color: #ffffff;
+  }
+
+  #nextRound4 {
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 90%;
+    left: 40%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 60px;
+    color:#ff0000;
+    background-color: #ffffff;
+  }
+
+
+  #score3D {
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:xx-large;
+    color:#0febeb;
+  }
+  
+  #score2D {
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 55%;
+    left: 85%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:75px;
+    color:#000000;
+  }
+  
+  #disableScreen{
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    z-index: 999999;
+    cursor: pointer;
+  }
+  
+  #disableScreenPosition{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  #disableScreen2{
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    z-index: 999999;
+    cursor: pointer;
+  }
+  
+  #disableScreenPosition2{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  #timer{
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 10%;
+    left: 90%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:xx-large;
+    color:#0febeb;
+  }
+
+  #timer2{
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 85%;
+    left: 85%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:75px;
+    color:#000000;
+  }
+  
+  #timerPosition{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  
+  }
+
+  #endPosition{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  #bothLose{
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: none;
+    margin: 0;
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:xx-large;
+    color:#000000;
+    background-color: #ff7606;
+  }
+  
+  #youWin{
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: none;
+    margin: 0;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    font-size: 50px;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:xx-large;
+    color:#000000;
+    background-color: #00ffaa;
+  }
+  
+  #youLose{
+    z-index: 999999;
+    cursor: pointer;
+    position: fixed;
+    display: none;
+    margin: 0;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    font-size: 50px;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size:xx-large;
+    color:#000000;
+    background-color: #ff7606;
+  }
+
+  

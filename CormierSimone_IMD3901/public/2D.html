@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2D Player</title>
+        <meta charset="utf-8" />
+        <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+        <link rel="stylesheet" href="/css/user-gesture.css">
+    </head>
+
+    <body>
+
+        <!-- audio files-->
+        <audio id="redS">   
+            <source src="assets/redbeep.mp3" />   
+        </audio> 
+        <audio id="blueS">   
+            <source src="assets/bluebeep.mp3" />   
+        </audio> 
+        <audio id="greenS">   
+            <source src="assets/greenbeep.mp3" />   
+        </audio> 
+        <audio id="yellowS">   
+            <source src="assets/yellowbeep.mp3" />   
+        </audio> 
+
+        <!-- TEXT and FORMAT-->
+
+        <!-- button to start game-->
+        <div id="buttonPosition">
+            <div class="placeMiddle">
+                <button id="button">Start!</button>
+            </div>
+        </div>
+
+        <!-- score-->
+        <div id ="score2D">Score: 0</div>
+
+        <!-- timer-->
+        <div class = "timerPosition">
+            <div id ="timer2" >Time: 100</div>
+        </div>
+
+        <!-- disable the screen-->
+        <div class="disableScreenPosition2">
+            <div id ="disableScreen2"></div>
+        </div>
+
+        <!-- got it right, next round-->
+        <div id ="nextRound3">
+            <div id = "right">Got it Right! Next Round</div>
+        </div>
+
+        <!-- got it wrong, next round-->
+        <div id ="nextRound4">
+            <div id = "wrong">Got it Wrong:( Next Round</div>
+        </div>
+
+        <!-- both oplayers lose-->
+        <div class = "endPosition">
+            <div id ="bothLose"> You Both Lose! :(</div>
+        </div>
+
+        <!-- 2D wins-->
+        <div class = "endPosition">
+            <div id ="youWin"> 2D Player Wins!</div>
+        </div>
+
+        <!-- 2D lose-->
+        <div class = "endPosition">
+            <div id ="youLose"> 2D Player Loses!</div>
+        </div>
+    
+
+                
+        <!-- our buttond to tell others -->
+
+        <button id="red" style="background-color:rgb(255, 0, 0); color:rgb(0, 0, 0); height:300px; width:450px; font-size: 50px">RED</button>
+        <button id="blue" style="background-color:rgb(0, 0, 255); color:rgb(0, 0, 0); height:300px; width:450px; font-size: 50px">BLUE</button>
+        <button id="green" style="background-color:rgb(0, 255, 0); color:rgb(0, 0, 0); height:300px; width:450px; font-size: 50px">GREEN</button>
+        <button id="yellow" style="background-color:rgb(255, 255, 0); color:rgb(0, 0, 0); height:300px; width:450px; font-size: 50px ;">YELLOW</button>
+
+        <!-- this is magic code created when the node server runs -->
+        <!-- //VERY HANDY! https://socket.io/docs/v3/emit-cheatsheet/  -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        //playing sounds on button click
+        const redSound = document.getElementById("redS");   
+        const redButton = document.getElementById("red");   
+        redButton.addEventListener("click", function(){ redSound.play(); });   
+
+        const blueSound = document.getElementById("blueS");   
+        const blueButton = document.getElementById("blue");   
+        blueButton.addEventListener("click", function(){ blueSound.play(); });
+
+        const greenSound = document.getElementById("greenS");   
+        const greenButton = document.getElementById("green");   
+        greenButton.addEventListener("click", function(){ greenSound.play(); });
+
+        const yellowSound = document.getElementById("yellowS");   
+        const yellowButton = document.getElementById("yellow");   
+        yellowButton.addEventListener("click", function(){ yellowSound.play(); });
+
+        document.querySelector('#buttonPosition').style.display='none'; 
+
+        // values needed
+        start = 0; 
+        score2D = 0;
+        win = 0;
+
+        //disable next round text on screen for now
+        document.querySelector('#nextRound3').style.display='none'; 
+        document.querySelector('#nextRound4').style.display='none'; 
+
+        // timer
+        let timerFunc = document.getElementById('timer2');
+        let timer2 = function(time) {
+            if((time === -1) && (win === 0)) {
+            socket.emit('2DdisableOn');
+            socket.emit('bothLose');  
+                    
+                return time;
+            
+        }
+            
+            timerFunc.innerHTML = "Time: "+ time;
+            return setTimeout(() => {timer2(--time)}, 1000);
+            
+        }
+
+    
+        //start
+        let socket = io();
+
+        socket.on('connect', (userData) => {
+            console.log('I exist!');
+
+            //put code here so that we know that socket.io has initailized ...
+            document.querySelector('#red').addEventListener('click', function(){
+                socket.emit('red2');
+                socket.emit('red1');
+                socket.emit('red3');
+            });
+
+            document.querySelector('#blue').addEventListener('click', function(){
+                socket.emit('blue2');
+                socket.emit('blue1');
+                socket.emit('blue3');
+            });
+
+            document.querySelector('#green').addEventListener('click', function(){
+                socket.emit('green2');
+                socket.emit('green1');
+                socket.emit('green3');
+            });
+
+            document.querySelector('#yellow').addEventListener('click', function(){
+                socket.emit('yellow2');
+                socket.emit('yellow1');
+                socket.emit('yellow3');
+            });
+
+            //listen to event from server
+            socket.on('color_change2', (data) => {
+                let colorStr = 'rgb(' + data.r + ',' + data.g + ',' + data.b + ')';
+                console.log('color_change2:' + colorStr);
+                document.body.style.backgroundColor = colorStr;
+            });
+
+            //listen to event from server
+            socket.on('color_change3', (data) => {
+                let colorStr = 'rgb(' + data.r + ',' + data.g + ',' + data.b + ')';
+                console.log('color_change3:' + colorStr);
+                document.body.style.backgroundColor = colorStr;
+            });
+        });
+
+
+        //start when button is pressed
+        document.querySelector('#button').addEventListener('click', function(){
+            socket.emit('start');
+        });
+        
+        //start game when button is pressed
+        socket.on('start_game', function(data){
+
+
+            colorsChosen3D = [];
+            colorsChosen2D = []; 
+
+            socket.emit('2DdisableOn');
+
+            start += 1;
+
+            if (start === 1){
+            timer2(100);  
+
+            }
+        
+        });
+
+        //storing what 3D player chooses
+        socket.on('color_change4', function(data){
+        
+            let colorStr = data;
+
+            color = document.body.style.backgroundColor;
+            colorsChosen3D.push(color);  
+
+        });
+
+        //storing what 2D player chooses
+        socket.on('color_change3', function(data){
+
+            let colorStr = data;
+            
+            color = document.body.style.backgroundColor;
+            colorsChosen2D.push(color); 
+    
+            //check if same length was chosen
+            if (colorsChosen3D.length === colorsChosen2D.length){       
+                //check if same colors were chosen                           
+                if (JSON.stringify(colorsChosen3D) === JSON.stringify(colorsChosen2D)){                            
+                    score2D +=10;                                                              
+                    document.getElementById("score2D").innerHTML = "Score: " + score2D;
+                    colorsChosen3D = [];
+                    colorsChosen2D = [];
+                    
+                    socket.emit('continue');
+                    document.querySelector('#nextRound3').style.display='block'; 
+
+                    //wins at 50 points
+                    if (score2D === 50) {        
+                        socket.emit('2DWin');
+                }
+            }
+
+                //get it wrong, lose points
+                else{   
+                    score2D -=10;
+                    document.getElementById("score2D").innerHTML = "Score: " + score2D;  // player loses points 
+                    colorsChosen3D = [];
+                    colorsChosen2D = [];
+                    document.querySelector('#nextRound4').style.display='block'; 
+                    
+                    
+                    socket.emit('continue');                       
+                }                  
+            }
+        });
+        
+
+        //next round when 3D plays after 2D
+        socket.on('next_round', function(data){
+
+        length = 4;
+
+        console.log("NEXT TURN") //successfully went to next turn
+            
+        });
+
+        //if on next round
+        if (length = 4){
+            
+            socket.on('color_change3', function(data){
+                //is 3D colors = 2D colors
+                if (colorsChosen2D.length === length){                   
+                    console.log( "turn over" ); //turn is over
+                    socket.emit('2DdisableOn');  
+                    socket.emit('3DdisableOff');   
+                    document.querySelector('#nextRound3').style.display='none'; 
+                    document.querySelector('#nextRound4').style.display='none';      
+                }
+            });
+        }
+
+
+        // display both lose
+        socket.on('both_lose', function(data){
+            document.querySelector('#bothLose').style.display='block';    
+            document.querySelector('#disableScreen2').style.display='block';
+            document.querySelector('#nextRound3').style.display='none'; 
+            document.querySelector('#nextRound4').style.display='none';
+            document.querySelector('#timer2').style.display='none'; 
+        });     
+
+        // display 3D win
+        socket.on('3D_Win', function(data){
+            document.querySelector('#disableScreen2').style.display='block';
+            document.querySelector('#youLose').style.display='block';
+            document.querySelector('#bothLose').style.display='none';   
+            document.querySelector('#nextRound3').style.display='none'; 
+            document.querySelector('#nextRound4').style.display='none';
+            document.querySelector('#timer2').style.display='none'; 
+            
+            win = 1;
+        });     
+
+        // display 2D win
+        socket.on('2D_Win', function(data){
+        document.querySelector('#disableScreen2').style.display='block';
+            document.querySelector('#youWin').style.display='block';
+            document.querySelector('#bothLose').style.display='none';   
+            document.querySelector('#nextRound3').style.display='none'; 
+            document.querySelector('#nextRound4').style.display='none';
+            document.querySelector('#timer2').style.display='none';   
+            win = 1;   
+        });  
+
+
+        //2D screen disable off
+        socket.on('2D_disable_off', function(data){
+            document.querySelector('#disableScreen2').style.display='none';
+        });   
+
+        //2D screen disable on
+        socket.on('2D_disable_on', function(data){
+            document.querySelector('#disableScreen2').style.display='block';
+        });  
+
+
+    </script>
+    </body>
+</html>
